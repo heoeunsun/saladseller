@@ -1,0 +1,6 @@
+CREATE TABLE order (
+o_id INT PRIMARY KEY AUTO_INCREMENT,
+p_id INT REFERENCES product(p_id) NOT NULL,
+m_id INT REFERENCES member(m_id) NOT NULL,
+o_num INT NOT NULL,
+o_date DATETIME NOT NULL );
