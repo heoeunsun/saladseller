@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.ProductDao">
+
+	<select id="searchProduct" parameterType="HashMap" resultType="product">
+		select * from product
+		where p_name like '%${keyword}%'
+			or descript like '%${keyword}%'
+			or specification like '%${keyword}%'
+		order by p_num desc
+	</select>
+	
+	<select id="selectAll" resultType="product" parameterType="int">
+		select * from product where cat_id = #{num} order by p_num desc
+	</select>
+	
+	<select id="selectAll2" resultType="product">
+		select * from product order by p_num desc
+	</select>
+
+	
+	<select id="selectOne" parameterType="HashMap" resultType="product">
+		select * from product where cat_id = #{cat_id} and p_num = #{num}
+	</select>
+	
+	<insert id="insertProduct" parameterType="product" useGeneratedKeys="true"
+		keyProperty="num">
+		insert into product values(
+			0, #{cat_id},#{p_name}, #{image}, #{descript}, #{specification}, #{price}, #{stock}
+		)
+	</insert>
+	
+	<insert id="insertAttach" parameterType="HashMap">
+		insert into attach (fullname, num)
+		values (#{fullname}, #{num})
+	</insert>
+	
+	<update id="updateProduct" parameterType="HashMap" useGeneratedKeys="true">
+		update product set
+			p_name= #{product.p_name},
+			image= #{product.image},
+			descript= #{product.descript},
+			specification= #{product.specification},
+			price= #{product.price},
+			stock= #{product.stock}
+			where p_num = #{num}
+	</update>
+	
+	<delete id="deleteProduct" parameterType="int">
+		delete from product where
+		p_num = #{num}
+	</delete>
+	
+	<select id="selectCat_id" resultType="int">
+		select cat_id from product where p_num = #{num}
+	</select>
+	
+	<select id="memberCount" resultType="int">
+		select count(*) from member
+	</select>
+	<select id="productCount1" resultType="int">
+		select count(*) from product where cat_id = 1;
+	</select>
+	<select id="productCount2" resultType="int">
+		select count(*) from product where cat_id = 2;
+	</select>
+	<select id="productCount3" resultType="int">
+		select count(*) from product where cat_id = 3;
+	</select>
+	
+</mapper>
