@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- root container 
+		datasource, sqlSessionFactory, dao,service
+		 
+		 http://d2.naver.com/helloworld/5102792
+		 -->
+	
+	<context:component-scan base-package="service"/>	 
+		 
+	<bean id = "dataSource" class = "org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value = "com.mysql.jdbc.Driver"/>
+		<property name="url" value = "jdbc:mysql://localhost:3306/spring"/>
+		<property name="username" value = "root"/>
+		<property name="password" value = "lovely9251"/>
+		<property name="maxActive" value="8"/>  
+		<property name="maxIdle" value ="8"/>
+		<property name="minIdle" value = "0"/>
+		<property name="initialSize" value = "0"/>		
+	</bean>
+	
+	<bean id = "sqlSessionFactory" class = "org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref = "dataSource"/>
+		<property name="typeAliasesPackage" value="model"/>
+		<property name="mapperLocations" value = "classpath:dao/mapper/**/*.xml"/>
+	</bean>
+	
+	<bean id = "productDao" class= "org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref= "sqlSessionFactory"/>
+		<property name="mapperInterface" value = "dao.ProductDao"></property>
+	</bean>
+	
+	<bean id = "memberDao" class= "org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref= "sqlSessionFactory"/>
+		<property name="mapperInterface" value = "dao.MemberDao"></property>
+	</bean>
+	
+	<bean id = "replyDao" class= "org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="mapperInterface" value = "dao.ReplyDao"/>
+	</bean>
+	
+	<bean id = "cartDao" class= "org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		<property name="mapperInterface" value = "dao.CartDao"/>
+	</bean>
+</beans>
